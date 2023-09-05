@@ -19,11 +19,11 @@ const AppRoutes = ()=>{
     {path: '/my-orders', element: <MyOrders/>},
     {path: '/sign-in', element: <SingIn/>},
 
-    {path: '/clothes', element: <MyAccount/>},
-    {path: '/electronics', element: <MyOrder/>},
-    {path: '/furnitures', element: <MyOrders/>},
-    {path: '/toys', element: <SingIn/>},
-    {path: '/others', element: <SingIn/>},
+    {path: '/clothes', element: <Home/>},
+    {path: '/electronics', element: <Home/>},
+    {path: '/furnitures', element: <Home/>},
+    {path: '/toys', element: <Home/>},
+    {path: '/others', element: <Home/>},
     {path: '/*', element: <NotFound/>}
   ])
   return routes
