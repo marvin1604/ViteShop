@@ -12,7 +12,7 @@ export const Navbar = () => {
                 <NavLink
                 to='/'
                 >
-                Shoppi
+                ViteShop
                 </NavLink>
             </li>
             <li>
@@ -28,7 +28,8 @@ export const Navbar = () => {
             <li>
                 <NavLink
                 to='/clothes'
-                onClick={()=> context.setSearchByCategory('Clothes')}
+                // onClick={()=> context.setSearchByCategory('Clothes')}
+                onClick={()=> context.setSearchByCategory('nuevo')}
                 className={({isActive})=>
                 isActive? activeStyle : undefined
                 }>

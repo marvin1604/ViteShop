@@ -19,47 +19,90 @@ export const ShoppingCartProvider = ({ children }) => {
   //ProductDetail * show product
   const [productToShow, setProductToShow] = useState({});
 
-    //cartProducts * add products to cart
-    const [cartProducts, setCartProducts] = useState([]);
+  //cartProducts * add products to cart
+  const [cartProducts, setCartProducts] = useState([]);
 
-    // cartProducts * my order
-    const [cartOrder, setCartOrder] = useState([]);
+  // cartProducts * my order
+  const [cartOrder, setCartOrder] = useState([]);
 
   //ProductAll * getProducts all API
   const [productAll, setProductAll] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([])
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
-    // searchProducts
-    const [searchProductByName, setSearchProductByName] = useState("");
+  // searchProducts
+  const [searchProductByName, setSearchProductByName] = useState("");
 
-    //SearchProductsByCategory
-    const [searchByCategory,setSearchByCategory] = useState("")
+  //SearchProductsByCategory
+  const [searchByCategory, setSearchByCategory] = useState("");
 
-  useEffect(()=>{
-    async function getAllProducts(){
-      const response = await fetch('https://api.escuelajs.co/api/v1/products')
-      const data = await response.json()
-      setProductAll(data)
+  useEffect(() => {
+    async function getAllProducts() {
+      const response = await fetch("https://api.escuelajs.co/api/v1/products");
+      const data = await response.json();
+      setProductAll(data);
     }
-    getAllProducts()
-  },[])
+    getAllProducts();
+  }, []);
 
   // searchByname
-  const filterByName = (products, searchByName) => {
+  const filterByName = (products, search) => {
     return products.filter((item) =>
-      item.title.toLowerCase().includes(searchByName))
+      item.title?.toLowerCase().includes(search)
+    );
   };
-  // console.log(filterByName(productAll, searchProductByName));
-  const filterByCategory = (products, searchByCategory) => {
-    return products.filter((item) =>
-      item.category.name.includes(searchByCategory))
+  const filterByCategory = (products, search) => {
+    return products.filter((item) => item.category?.name.includes(search));
   };
-  // console.log(filterByCategory(productAll, searchByCategory));
+
+  const filterBy = (
+    searchType,
+    productAll,
+    searchProductByName,
+    searchByCategory
+  ) => {
+    if (searchType === "BY_TITLE") {
+      return filterByName(productAll, searchProductByName);
+    }
+    if (searchType === "BY_CATEGORY") {
+      return filterByCategory(productAll, searchByCategory);
+    }
+    if (searchType === "BY_TITLE_AND_BY_CATEGORY") {
+      return filterByCategory(productAll, searchByCategory).filter((item) =>
+        item.title?.toLowerCase().includes(searchProductByName)
+      )
+    }
+    if (!searchType) {
+      return productAll
+    }
+  };
   useEffect(() => {
-    if (searchProductByName && !searchByCategory) setFilteredProducts(filterByName(productAll, searchProductByName))
-    if (searchByCategory && !searchProductByName) setFilteredProducts(filterByCategory( productAll, searchByCategory))
-    if (!searchProductByName && !searchByCategory) setFilteredProducts(filterByName(productAll, searchProductByName))
-  }, [productAll, searchProductByName, searchByCategory])
+    if (searchProductByName && searchByCategory)
+      setFilteredProducts(
+        filterBy(
+          "BY_TITLE_AND_BY_CATEGORY",
+          productAll,
+          searchProductByName,
+          searchByCategory
+        )
+      );
+    if (searchProductByName && !searchByCategory)
+      setFilteredProducts(
+        filterBy("BY_TITLE", productAll, searchProductByName, searchByCategory)
+      );
+    if (!searchProductByName && searchByCategory)
+      setFilteredProducts(
+        filterBy(
+          "BY_CATEGORY",
+          productAll,
+          searchProductByName,
+          searchByCategory
+        )
+      );
+    if (!searchProductByName && !searchByCategory)
+      setFilteredProducts(
+        filterBy(null, productAll, searchProductByName, searchByCategory)
+      );
+  }, [productAll, searchProductByName, searchByCategory]);
 
   return (
     <ShoppingCartContext.Provider
