@@ -2,7 +2,32 @@ import { createContext, useState, useEffect } from "react";
 
 export const ShoppingCartContext = createContext();
 
+export const initialzeLocalStorage = () => {
+  const accountInLocalStorage = localStorage.getItem("account");
+  const signOutInLocalStorage = localStorage.getItem("sign-out");
+  let parsedAccount;
+  let parsedSignOut;
+
+  if (!accountInLocalStorage) {
+    localStorage.setItem("account", JSON.stringify({}));
+    parsedAccount = {};
+  } else {
+    parsedAccount = JSON.parse(accountInLocalStorage);
+  }
+  if (!signOutInLocalStorage) {
+    localStorage.setItem("sign-out", JSON.stringify({}));
+    parsedSignOut = {};
+  } else {
+    parsedSignOut = JSON.parse(signOutInLocalStorage);
+  }
+};
 export const ShoppingCartProvider = ({ children }) => {
+  //My account
+  const [account, setAccount] = useState({});
+  initialzeLocalStorage()
+
+  //SignOut
+  const [signOut, setSignOut] = useState(false);
   //count add cart
   const [count, setCount] = useState(0);
 
@@ -69,10 +94,10 @@ export const ShoppingCartProvider = ({ children }) => {
     if (searchType === "BY_TITLE_AND_BY_CATEGORY") {
       return filterByCategory(productAll, searchByCategory).filter((item) =>
         item.title?.toLowerCase().includes(searchProductByName)
-      )
+      );
     }
     if (!searchType) {
-      return productAll
+      return productAll;
     }
   };
   useEffect(() => {
@@ -107,6 +132,10 @@ export const ShoppingCartProvider = ({ children }) => {
   return (
     <ShoppingCartContext.Provider
       value={{
+        account,
+        setAccount,
+        signOut,
+        setSignOut,
         count,
         setCount,
         openProductDetail,
