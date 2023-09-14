@@ -137,13 +137,16 @@ export const SingIn = () => {
             defaultValue={parsedAccount?.password}
           />
         </div>
+        <Link to='/'>
         <button
-          className="bg-green-600 mx-4 rounded-lg px-2 text-white border border-green-600 text-center py-2 cursor-pointer"
+          className="bg-green-600 mx-4 rounded-lg px-2 text-white border border-green-600 text-center py-2 cursor-pointer w-[320px]"
           disabled={hasUserAnAccount}
           onClick={() => createAccount()}
         >
           Create
         </button>
+        </Link>
+        
       </div>
       </form>
     )

@@ -24,7 +24,13 @@ export const initialzeLocalStorage = () => {
 export const ShoppingCartProvider = ({ children }) => {
   //My account
   const [account, setAccount] = useState({});
-  initialzeLocalStorage()
+  useEffect(()=>{
+    //Account
+    const accountInLocalStorage = localStorage.getItem('account')
+    const parsedAccount = JSON.parse(accountInLocalStorage)
+    if(parsedAccount != undefined){
+    setAccount(parsedAccount);}
+  },[])
 
   //SignOut
   const [signOut, setSignOut] = useState(false);

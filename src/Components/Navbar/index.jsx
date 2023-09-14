@@ -15,7 +15,6 @@ export const Navbar = () => {
     localStorage.setItem("sign-out", stringifiedSignOut);
     context.setSignOut(true);
   };
-  console.log(context.account);
   return (
     <nav className="bg-green-500 flex justify-between items-center fixed z-10 top-0 w-full py-5 px-8 text-sm font-light">
       <ul className="flex items-center gap-3 text-cyan-50 font-mono">
